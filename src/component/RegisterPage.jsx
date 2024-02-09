@@ -79,7 +79,6 @@ const RegisterPage = (props) => {
             </Grid>
             <Grid container direction="row">
               <Grid item>
-                <NavLink to="/RegisterPage">
                   <Button
                     varient="outlined"
                     color="primary"
@@ -88,7 +87,6 @@ const RegisterPage = (props) => {
                   >
                     新規登録
                   </Button>
-                </NavLink>
               </Grid>
             </Grid>
           </form>

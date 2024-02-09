@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import {AuthProvider, useAuth} from './AuthProvider';
+
 
 const AcountMenu = () => {
-  const [aspect,setAspect]=useState(false);
-  const toggle =()=>{
-    setAspect(prevState=>!prevState)
-  }
-
+  const{authenticated,login,logout,id}=useAuth();
   return (
-    <li class="solid1"><a class=" downlist" href="index.html" onClick={toggle}>{aspect? "ログイン":"ログアウト"}</a></li>
+    <>
+      {
+        authenticated?<li class="solid1"><a class=" downlist" onClick={logout}>ログアウト</a></li>:<li class="solid1"><a class=" downlist" onClick={login}>ログイン</a></li>
+      }
+    </>
   );
 };
 

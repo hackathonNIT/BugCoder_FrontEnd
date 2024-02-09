@@ -78,7 +78,6 @@ const LoginPage = (props) => {
                   <Button
                     varient="outlined"
                     color="primary"
-                    type="submit"
                     style={{ marginTop:"10px", backgroundColor:"#eee"}}
                   >
                     新規登録

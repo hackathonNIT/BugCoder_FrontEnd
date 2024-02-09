@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,Navigate } from "react-router-dom";
 
 import Header from './component/Header';
 import TopPage from './component/TopPage';
@@ -10,6 +10,8 @@ import {Container, CssBaseline,ThemeProvider,createTheme} from '@mui/material'
 import IssuePage from './component/IssuePage';
 import LoginPage from './component/LoginPage';
 import RegisterPage from './component/RegisterPage';
+import { AuthProvider,useAuth } from './component/AuthProvider';
+
 
 const theme = createTheme({
   typography: {
@@ -42,11 +44,17 @@ const theme = createTheme({
   },
 });
 
+function Authenticated({children}){
+  const {authenticated}=useAuth();
+  return authenticated===true?children:<Navigate to="/login" replace/>;
+}
+
 function App() {
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <CssBaseline/>
+        <AuthProvider>
         <Header/>
           {/* <Container maxWidth="xl"></Container> */}
           <div style={{ padding:"20px"}}></div>
@@ -57,9 +65,10 @@ function App() {
             <Route path="/issue">
               <Route path=':issueId' element={<IssuePage />} />
             </Route>
-            <Route path="/sendissue" element={<SendIssue/>}/>
+            <Route path="/sendissue" element={<Authenticated><SendIssue/></Authenticated>}/>
           </Routes>
         <Footer/>
+        </AuthProvider>
       </ThemeProvider>
     </div>
   );
