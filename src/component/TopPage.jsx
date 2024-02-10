@@ -5,10 +5,23 @@ import IssueCard from "./IssueCard";
 import { useAuth,AuthProvider } from "./AuthProvider";
 import LoginPage from "./LoginPage";
 import { useNavigate } from "react-router-dom";
+import { useState,useEffect } from "react";
 
 
 
 const TopPage = (props) => {
+  const [data, setData] = useState(0);
+  const issueDataLink='http://localhost:5050/api/v1/code';
+  console.log(String(issueDataLink));
+  useEffect(() => {
+      fetch(issueDataLink)
+          .then(response => response.json())
+          .then(data=> setData(data))
+          .catch(error => console.error('Error fetching data:', error));
+  }, []);
+  console.log(data.length);
+  const latestIssue=data.length-1;
+
   return (
     <div>
       <div style={{paddingTop:"40px",paddingBottom:"0px",backgroundColor:"#444", width:"100%",minWidth:"700px",marginRight:"auto",marginLeft:"auto",}}>
@@ -31,9 +44,15 @@ const TopPage = (props) => {
         <Grid container>
           <Grid sm={1}/>
           <Grid xs={10} spacing={2}>
-            <IssueCard title={'Title'} language={'Cpp'} username={'username'} id={1}></IssueCard>
+            {data &&<IssueCard title={data[latestIssue].title} language={'Cpp'} username={data[latestIssue].user_id} id={data[latestIssue].code_id}/>
+            }
             <br/>
-            <IssueCard title={'Title'} language={'Cpp'} username={'username'}></IssueCard>
+            {data &&<IssueCard title={data[latestIssue-1].title} language={'Cpp'} username={data[latestIssue-1].user_id} id={data[latestIssue-1].code_id}/>
+            }
+            <br/>
+            {data &&<IssueCard title={data[latestIssue-2].title} language={'Cpp'} username={data[latestIssue-2].user_id} id={data[latestIssue-2].code_id}/>
+            }
+            <br/>
           </Grid>
         </Grid>
       </div>

@@ -1,26 +1,14 @@
 import React from "react";
 import CodeViewer from "./CodeViewer";
 import GrayBox from "./GrayBox";
-import { Grid,TextField,Button,MenuItem, } from "@mui/material";
+import { Grid,TextField,Button,MenuItem, AppBar, } from "@mui/material";
 import {Textarea} from "@mui/joy";
 import{useForm,Controller}from "react-hook-form";
+import IssueAppbar from "./IssueAppbar";
 
-const Issue = (props) => {
-  const title="タイトルです";
-  const explane=`ここに説明を表示します。ここに説明を表示します。ここに説明を表示します。ここに説明を表示します。
-  ここに説明を表示してくれ。`;
-  const code=`
-  function greet(name) {
-    return 'Hello, ' + name + '!';
-  }
-
-  const person = 'World';
-  console.log(greet(person));
-  `;
-  const input=`string:s
-int:i`;
-  const output=`int:out`;
-
+const Issue = ({title,explane,code,input,output}) => {
+  if(input===undefined)input="特になし";
+  if(output===undefined)output="特になし";
   const language="cpp";
   const{control,handleSubmit}=useForm({
     defaultValue:{
@@ -36,7 +24,8 @@ int:i`;
       <Grid container>
         <Grid sm={1}/>
           <Grid xs={10} spacing={2}>
-            <h1 style={{marginBottom:"0px",fontSize:"28px",fontWeight:"600"}}>{title}</h1>
+            <IssueAppbar page="0" id="1"/>
+            <h1 style={{marginBottom:"0px",paddingTop:"20px",fontSize:"28px",fontWeight:"600"}}>{title}</h1>
             <hr style={{marginTop:"10px",marginBottom:"20px",border:"0",borderTop:"1px solid #eee"}}/>
             <h2>想定動作・バグ説明</h2>
             <pre style={{whiteSpace:"pre-wrap", fontFamily:"メイリオ"}}>{explane}</pre>

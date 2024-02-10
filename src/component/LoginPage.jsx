@@ -2,8 +2,16 @@ import React from "react";
 import{useForm,Controller}from "react-hook-form";
 import { Grid,TextField,Button,MenuItem,FormControlLabel } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+
+
+
 
 const LoginPage = (props) => {
+  axios.defaults.baseURL = 'http://localhost:3000';
+  axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+  axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+
   const{control,handleSubmit}=useForm({
     defaultValue:{
       username:"",
@@ -11,7 +19,15 @@ const LoginPage = (props) => {
     },
   });
   const onSubmit=(data,e)=>{
-    console.log(data.titleBox);
+    axios.post( 'http://localhost:5050/api/v1/user/login','user_name=a&password=pass')
+      .then(res => {
+          console.log('成功')
+      })
+      .catch((err) => {
+        console.log(err) // 失敗
+      })
+    console.log(data.username);
+    console.log(data.password);
   };
   return (
     <div style={{paddingTop:"20px",paddingBottom:"20px",background:"#fff", width:"70%",minWidth:"700px",minHeight:"800px",marginRight:"auto",marginLeft:"auto",boxShadow: "0px 5px 20px #5f5f5f",}}>
@@ -54,6 +70,7 @@ const LoginPage = (props) => {
                       fullWidth
                       margin="normal"
                       size="small"
+                      type="password"
                     />
                   )}
                 />

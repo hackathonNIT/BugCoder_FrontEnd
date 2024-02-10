@@ -54,6 +54,7 @@ const RegisterPage = (props) => {
                       fullWidth
                       margin="normal"
                       size="small"
+                      type="password"
                     />
                   )}
                 />
@@ -65,13 +66,14 @@ const RegisterPage = (props) => {
               <Grid item xs={6}>
                 <Controller
                   control={control}
-                  name="password"
+                  name="repassword"
                   render={({field})=>(
                     <TextField
                       {...field}
                       fullWidth
                       margin="normal"
                       size="small"
+                      type="password"
                     />
                   )}
                 />
