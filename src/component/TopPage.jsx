@@ -6,21 +6,32 @@ import { useAuth,AuthProvider } from "./AuthProvider";
 import LoginPage from "./LoginPage";
 import { useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
+import { DataGrid } from "@mui/x-data-grid";
 
-
+function issuecards(datas){
+  return(
+    <>
+     {datas.reverse().map((data,index)=>(
+      <>
+      <IssueCard title={data.title} language={'Cpp'} username={data.user_id} id={data.code_id}/>
+      <br/>
+      </>
+     ))}
+    </>
+  )
+}
 
 const TopPage = (props) => {
-  const [data, setData] = useState(0);
+  const [data, setData] = useState([]);
   const issueDataLink='http://localhost:5050/api/v1/code';
   console.log(String(issueDataLink));
   useEffect(() => {
-      fetch(issueDataLink)
+     fetch(issueDataLink)
           .then(response => response.json())
           .then(data=> setData(data))
           .catch(error => console.error('Error fetching data:', error));
   }, []);
-  console.log(data.length);
-  const latestIssue=data.length-1;
+  console.log(data);
 
   return (
     <div>
@@ -33,7 +44,7 @@ const TopPage = (props) => {
         <Grid item xs={0.3} style={{background:"#fff"}}></Grid>
         <Grid item xs={8.5}>
           <div style={{paddingLeft:"10px",paddingBottom:"10px"}}>
-            <h1  style={{color:"#fff",marginBottom:"0px",fontSize:"28px",fontWeight:"600",paddingLeft:"0px",fontFamily:"sans-serif"}}>BagCoder</h1>
+            <h1  style={{color:"#fff",marginBottom:"0px",fontSize:"28px",fontWeight:"600",paddingLeft:"0px",fontFamily:"sans-serif"}}>BugCoder</h1>
             <p style={{color:"#fff",marginBottom:"0px",fontSize:"15px",paddingLeft:"0px",fontFamily:"sans-serif"}}>プログラミングにおけるバグ解決の場を提供するSNSプラットフォームです。</p>
             <p style={{color:"#fff",marginBottom:"0px",fontSize:"15px",paddingLeft:"0px",fontFamily:"sans-serif"}}>ユーザーはバグの詳細な説明やプログラムのサンプルセットを投稿し、他のユーザーはその問題を解決するプログラムを提供します。</p>
           </div>
@@ -44,7 +55,8 @@ const TopPage = (props) => {
         <Grid container>
           <Grid sm={1}/>
           <Grid xs={10} spacing={2}>
-            {data &&<IssueCard title={data[latestIssue].title} language={'Cpp'} username={data[latestIssue].user_id} id={data[latestIssue].code_id}/>
+            {issuecards(data)}
+            {/* {data &&<IssueCard title={data[latestIssue].title} language={'Cpp'} username={data[latestIssue].user_id} id={data[latestIssue].code_id}/>
             }
             <br/>
             {data &&<IssueCard title={data[latestIssue-1].title} language={'Cpp'} username={data[latestIssue-1].user_id} id={data[latestIssue-1].code_id}/>
@@ -52,7 +64,7 @@ const TopPage = (props) => {
             <br/>
             {data &&<IssueCard title={data[latestIssue-2].title} language={'Cpp'} username={data[latestIssue-2].user_id} id={data[latestIssue-2].code_id}/>
             }
-            <br/>
+            <br/> */}
           </Grid>
         </Grid>
       </div>
