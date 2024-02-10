@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import{useForm,Controller}from "react-hook-form";
 import { Grid,TextField,Button,MenuItem,FormControlLabel } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
 const RegisterPage = (props) => {
+  const [ismiss,setmiss]=useState(false);
   const{control,handleSubmit}=useForm({
     defaultValue:{
       username:"",
       password:"",
+      repassword:"",
     },
   });
   const onSubmit=(data,e)=>{
-    console.log(data.titleBox);
+    setmiss(false)
+    if(data.repassword!==data.password||data.password===""||data.username===""){
+      setmiss(true)
+    }
+    else{
+      console.log(data.username);
+    }
   };
   return (
     <div style={{paddingTop:"20px",paddingBottom:"20px",background:"#fff", width:"70%",minWidth:"700px",minHeight:"800px",marginRight:"auto",marginLeft:"auto",boxShadow: "0px 5px 20px #5f5f5f",}}>
@@ -79,6 +87,7 @@ const RegisterPage = (props) => {
                 />
               </Grid>
             </Grid>
+            {ismiss?<p style={{color:"#d11"}}>登録内容に不備があります</p>:<></>}
             <Grid container direction="row">
               <Grid item>
                   <Button
