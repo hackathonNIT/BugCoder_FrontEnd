@@ -5,30 +5,42 @@ import { Grid,TextField,Button,MenuItem, AppBar, } from "@mui/material";
 import {Textarea} from "@mui/joy";
 import{useForm,Controller}from "react-hook-form";
 import IssueAppbar from "./IssueAppbar";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { DataGrid,GridColDef,GridRowsProp } from "@mui/x-data-grid";
 
-const colums =[
-  {field:'id',headername:'id',type:'number',flex:1},
-  {
-    field: 'name',
-    headerName: 'ユーザー名',
-    type: 'string',
-    flex: 2,
-  },
-  {
-    field: 'result',
-    headerName: '結果',
-    type: 'string',
-    flex: 1,
-  },
-  {
-    field: 'date',
-    headerName: '提出日時',
-    type: 'string',
-    flex: 1.5,
-  },
-];
+function colums (issue_id) {
+  const submissionlink="/issue/"+String(issue_id)+"/submission/"
+  const colum =[
+    {
+      field: 'deleteBtn',
+      headerName: '詳細',
+      sortable: false,
+      width: 90,
+      disableClickEventBubbling: true,
+      renderCell: (params) => <NavLink to={submissionlink+String(params.id)}><Button rowId={ params.id } >詳細</Button></NavLink>
+    },
+    {field:'id',headername:'id',type:'number',flex:1},
+    {
+      field: 'name',
+      headerName: 'ユーザー名',
+      type: 'string',
+      flex: 2,
+    },
+    {
+      field: 'result',
+      headerName: '結果',
+      type: 'string',
+      flex: 1,
+    },
+    {
+      field: 'date',
+      headerName: '提出日時',
+      type: 'string',
+      flex: 1.5,
+    },
+  ];
+  return colum;
+}
 
 const rows=[
   { id: 1, name: 'JIN', result: 'WA', date: '1992年12月4日' },
@@ -47,7 +59,7 @@ const IssueSubmission = (props) => {
             <IssueAppbar page="1" id={issueId}/>
             <h1 style={{marginBottom:"0px",paddingTop:"20px",fontSize:"28px",fontWeight:"600"}}>提出結果</h1>
             <hr style={{marginTop:"10px",marginBottom:"20px",border:"0",borderTop:"1px solid #eee"}}/>
-            <DataGrid rows={rows} columns={colums}/>
+            <DataGrid rows={rows} columns={colums(issueId)}/>
           </Grid>
         </Grid>
     </div>

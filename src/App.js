@@ -12,6 +12,7 @@ import LoginPage from './component/LoginPage';
 import RegisterPage from './component/RegisterPage';
 import { AuthProvider,useAuth } from './component/AuthProvider';
 import IssueSubmission from './component/IssueSubmission';
+import SubmitCode from './component/SubmitCode';
 
 
 const theme = createTheme({
@@ -69,6 +70,13 @@ function App() {
             <Route path="/issue">
               <Route path=':issueId'>
                 <Route path=":submission" element={<IssueSubmission/>}/>
+              </Route>
+            </Route>
+            <Route path="/issue">
+              <Route path=':issueId'>
+                <Route path=":submission" >
+                  <Route path=":submissionId" element={<SubmitCode/>}/>
+                </Route>
               </Route>
             </Route>
             <Route path="/sendissue" element={<Authenticated><SendIssue/></Authenticated>}/>

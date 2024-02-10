@@ -5,20 +5,23 @@ const AuthContext = createContext();
 const AuthProvider = ({children}) => {
   const navigate=useNavigate();
   const [authenticated,setAuthenticated] = useState(false);
-
-  function login () {
+  const [userid,setUserid]=useState("");
+  const [username,setUsername]=useState("");
+  function login (user_id,user_name) {
     setAuthenticated(true);
+    setUserid(user_id);
+    setUsername(user_name);
   }
   function logout () {
     setAuthenticated(false);
     navigate("/login");
   }
-  const userid="";
   const auth = {
     authenticated,
     login,
     logout,
     userid,
+    username,
   }
 
   return (

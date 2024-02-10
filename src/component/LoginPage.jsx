@@ -1,31 +1,29 @@
 import React from "react";
 import{useForm,Controller}from "react-hook-form";
 import { Grid,TextField,Button,MenuItem,FormControlLabel } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { NavLink,Navigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import {AuthProvider, useAuth} from './AuthProvider';
 
 
 const LoginPage = (props) => {
+  const{authenticated,login,logout,userid,username}=useAuth();
   axios.defaults.baseURL = 'http://localhost:3000';
   axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
   axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
   const [resData, setData] = useState();
-
+  const navigate=useNavigate();
   const{control,handleSubmit}=useForm({
     defaultValue:{
-      Username:"",
-      Password:"",
+      Username:'',
+      Password:'',
     },
   });
 
   const onSubmit=(data,e)=>{
-    const postdata= {
-      user_name:data.Username,
-      password:data.Password,
-    };
-    console.log(postdata)
+    const postdata= 'user_name='+data.Username+'&password='+data.Password
     axios.post( 'http://localhost:5050/api/v1/user/login',postdata,{
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -34,16 +32,15 @@ const LoginPage = (props) => {
     })
       .then(res => {
           console.log('返信アリ')
-          console.log(res)
-      })
-      .then(resdata=>{
-        console.log(resdata)
+          setData(res.data)
+          if(res.data.is_exist){
+            login(res.data.user_id,res.data.user_name);
+            navigate("/")
+          }
       })
       .catch((err) => {
         console.log(err) // 失敗
       })
-    console.log(data.Username);
-    console.log(data.Password);
   };
   return (
     <div style={{paddingTop:"20px",paddingBottom:"20px",background:"#fff", width:"70%",minWidth:"700px",minHeight:"800px",marginRight:"auto",marginLeft:"auto",boxShadow: "0px 5px 20px #5f5f5f",}}>

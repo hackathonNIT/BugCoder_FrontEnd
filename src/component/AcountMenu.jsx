@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {AuthProvider, useAuth} from './AuthProvider';
+import { NavLink } from 'react-router-dom';
 
 
 const AcountMenu = () => {
@@ -7,7 +8,7 @@ const AcountMenu = () => {
   return (
     <>
       {
-        authenticated?<li class="solid1"><a class=" downlist" onClick={logout}>ログアウト</a></li>:<li class="solid1"><a class=" downlist" onClick={login}>ログイン</a></li>
+        authenticated?<li class="solid1"><a class=" downlist" onClick={logout}>ログアウト</a></li>:<NavLink to="/login"><li class="solid1"><a class=" downlist">ログイン</a></li></NavLink>
       }
     </>
   );
