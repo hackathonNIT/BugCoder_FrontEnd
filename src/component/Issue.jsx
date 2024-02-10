@@ -6,9 +6,15 @@ import {Textarea} from "@mui/joy";
 import{useForm,Controller}from "react-hook-form";
 import IssueAppbar from "./IssueAppbar";
 
-const Issue = ({title,explane,code,input,output}) => {
-  if(input===undefined)input="特になし";
-  if(output===undefined)output="特になし";
+const Issue = ({title,explane,code,input,output,id}) => {
+  if(input===null||input==="")input="特になし";
+  if(output===null||output==="")output="特になし";
+  console.log(input)
+  let explane2='';
+  explane.split(/(\\n)/).map((item, index) => {
+    explane2+=item.match(/\\n/) ? `
+` : item
+  })
   const language="cpp";
   const{control,handleSubmit}=useForm({
     defaultValue:{
@@ -24,11 +30,11 @@ const Issue = ({title,explane,code,input,output}) => {
       <Grid container>
         <Grid sm={1}/>
           <Grid xs={10} spacing={2}>
-            <IssueAppbar page="0" id="1"/>
+            <IssueAppbar page="0" id={id}/>
             <h1 style={{marginBottom:"0px",paddingTop:"20px",fontSize:"28px",fontWeight:"600"}}>{title}</h1>
             <hr style={{marginTop:"10px",marginBottom:"20px",border:"0",borderTop:"1px solid #eee"}}/>
             <h2>想定動作・バグ説明</h2>
-            <pre style={{whiteSpace:"pre-wrap", fontFamily:"メイリオ"}}>{explane}</pre>
+            <pre style={{whiteSpace:"pre-wrap", fontFamily:"メイリオ"}}>{explane2}</pre>
             <h2>プログラム</h2>
             <p>使用言語:{language}</p>
             <CodeViewer codeString={code} language={language}/>

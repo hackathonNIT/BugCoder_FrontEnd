@@ -18,7 +18,7 @@ const Header = (props) => {
           marginLeft: "10px",
           paddingTop: "5px",
           marginBottom: "0",
-          }}>Bag
+          }}>Bug
         </h1>
         <h1 style={{position: "relative",
           textAlign: "left",
@@ -42,7 +42,6 @@ const Header = (props) => {
               <ul class="nav2" >
                 <AcountMenu/>
                 <li class="solid1"><a class=" downlist" href="">プロフィール</a></li>
-                <li class="solid1"><a class=" downlist" href="">ユーザー設定</a></li>
               </ul>
             </li>
           </ul>

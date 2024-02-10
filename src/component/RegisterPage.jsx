@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import{useForm,Controller}from "react-hook-form";
 import { Grid,TextField,Button,MenuItem,FormControlLabel } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { NavLink,useNavigate } from "react-router-dom";
+import {AuthProvider, useAuth} from './AuthProvider';
+import axios from "axios";
 
 const RegisterPage = (props) => {
   const [ismiss,setmiss]=useState(false);
+  axios.defaults.baseURL = 'http://localhost:3000';
+  axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+  axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+  const navigate=useNavigate();
   const{control,handleSubmit}=useForm({
     defaultValue:{
       username:"",
@@ -14,11 +20,27 @@ const RegisterPage = (props) => {
   });
   const onSubmit=(data,e)=>{
     setmiss(false)
+    let isregist=false;
     if(data.repassword!==data.password||data.password===""||data.username===""){
       setmiss(true)
     }
     else{
-      console.log(data.username);
+      const postdata= 'user_name='+data.username+'&password='+data.password
+      axios.post( 'http://localhost:5050/api/v1/user/signin',postdata,{
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      })
+        .then(res => {
+            console.log(res.data.is_exist)
+            if(!res.data.is_exist){
+              navigate('/login')
+            }
+        })
+        .catch((err) => {
+          console.log(err) // 失敗
+        })
     }
   };
   return (

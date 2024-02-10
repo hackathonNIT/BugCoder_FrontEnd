@@ -7,6 +7,7 @@ import{useForm,Controller}from "react-hook-form";
 import IssueAppbar from "./IssueAppbar";
 import { NavLink, useParams } from "react-router-dom";
 import { DataGrid,GridColDef,GridRowsProp } from "@mui/x-data-grid";
+import { useState,useEffect } from "react";
 
 function colums (issue_id) {
   const submissionlink="/issue/"+String(issue_id)+"/submission/"
@@ -41,16 +42,28 @@ function colums (issue_id) {
   ];
   return colum;
 }
-
-const rows=[
-  { id: 1, name: 'JIN', result: 'WA', date: '1992年12月4日' },
-  { id: 2, name: 'JUNG KOOK', result: 'AC', date: '1997年9月1日' }
-]
+function Rows(datas){
+  const rows=[]
+  for(let i=0;i<datas.length;i++){
+    rows.push({id:datas[i].code_id,name:"username",result:"AC",date:datas[i].create_at})
+  }
+  return rows
+}
 
 const IssueSubmission = (props) => {
   const { issueId,submission } = useParams();
   console.log(issueId)
   console.log(submission)
+  const [data, setData] = useState([]);
+  const issueDataLink='http://localhost:5050/api/v1/code/'+String(issueId);
+  console.log(String(issueDataLink));
+  useEffect(() => {
+      fetch(issueDataLink)
+          .then(response => response.json())
+          .then(data=> setData(data.children))
+          .catch(error => console.error('Error fetching data:', error));
+  }, []);
+  console.log(data)
   return (
     <div style={{paddingTop:"30px",paddingBottom:"20px",background:"#fff", width:"70%",minWidth:"700px",minHeight:"800px",marginRight:"auto",marginLeft:"auto",boxShadow: "0px 5px 10px #5f5f5f",}}>
       <Grid container>
@@ -59,7 +72,7 @@ const IssueSubmission = (props) => {
             <IssueAppbar page="1" id={issueId}/>
             <h1 style={{marginBottom:"0px",paddingTop:"20px",fontSize:"28px",fontWeight:"600"}}>提出結果</h1>
             <hr style={{marginTop:"10px",marginBottom:"20px",border:"0",borderTop:"1px solid #eee"}}/>
-            <DataGrid rows={rows} columns={colums(issueId)}/>
+            <DataGrid rows={Rows(data)} columns={colums(issueId)}/>
           </Grid>
         </Grid>
     </div>

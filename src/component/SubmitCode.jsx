@@ -11,11 +11,14 @@ function ColorfulTextField({ datas }) {
   return (
     <div>
       {datas.map((data, index) => (
-        // 各行のspan要素に適用するスタイルを設定する
-        <span style={{ background:bgcolors[data.status+1], color: colors[data.status+1] }}>
-          {data.code}
+        data.code.split(/(\n )/).map((d,i)=>(
+          <span style={{ background:bgcolors[data.status+1], color: colors[data.status+1] }}>
+          {d}
+          {console.log(d)}
           <br/>
-        </span>
+          </span>
+        ))
+        // 各行のspan要素に適用するスタイルを設定する
       ))}
     </div>
   );
