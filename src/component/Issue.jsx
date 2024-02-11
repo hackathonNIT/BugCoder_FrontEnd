@@ -5,8 +5,11 @@ import { Grid,TextField,Button,MenuItem, AppBar, } from "@mui/material";
 import {Textarea} from "@mui/joy";
 import{useForm,Controller}from "react-hook-form";
 import IssueAppbar from "./IssueAppbar";
-
-const Issue = ({title,explane,code,input,output,id,language}) => {
+import { useAuth } from "./AuthProvider";
+import { NavLink } from "react-router-dom";
+import axios from "axios";
+const Issue = ({title,explane,code,input,output,issue_id,language}) => {
+  const{authenticated,login,logout,id}=useAuth();
   if(input===null||input==="")input="特になし";
   if(output===null||output==="")output="特になし";
   console.log(input)
@@ -18,10 +21,24 @@ const Issue = ({title,explane,code,input,output,id,language}) => {
   const{control,handleSubmit}=useForm({
     defaultValue:{
       program:"",
+      code_id:issue_id
     },
   });
   const onSubmit=(data,e)=>{
-    console.log(data.titleBox);
+    console.log(data.program);
+    const postdata= 'code='+data.program+'&code_id='+data.code_id
+    axios.post( 'http://localhost:5050/api/v1/code/submit',postdata,{
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    })
+      .then(res => {
+          console.log(res)
+      })
+      .catch((err) => {
+        console.log(err) // 失敗
+      })
   };
 
   return (
@@ -29,7 +46,7 @@ const Issue = ({title,explane,code,input,output,id,language}) => {
       <Grid container>
         <Grid sm={1}/>
           <Grid xs={10} spacing={2}>
-            <IssueAppbar page="0" id={id}/>
+            <IssueAppbar page="0" id={issue_id}/>
             <h1 style={{marginBottom:"0px",paddingTop:"20px",fontSize:"28px",fontWeight:"600"}}>{title}</h1>
             <hr style={{marginTop:"10px",marginBottom:"20px",border:"0",borderTop:"1px solid #eee"}}/>
             <h2>想定動作・バグ説明</h2>
@@ -61,14 +78,24 @@ const Issue = ({title,explane,code,input,output,id,language}) => {
                   />
                 )}
               />
-              <Button
+              {authenticated?
+                <Button
                 varient="contained"
                 color="secondary"
                 type="submit"
                 style={{backgroundColor:"#36c"}}
-              >
-                提出する
-              </Button>
+                >
+                  提出する
+                </Button>
+                :
+                <NavLink to="/login"><Button
+                varient="contained"
+                color="secondary"
+                style={{backgroundColor:"#36c"}}
+                >
+                  ログインしてね
+                </Button></NavLink>
+              }
             </form>
           </Grid>
         </Grid>
