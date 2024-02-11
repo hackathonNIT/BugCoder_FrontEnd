@@ -14,7 +14,7 @@ function issuecards(datas){
     <>
      {datas.reverse().map((data,index)=>(
       <>
-      <IssueCard title={data.title} language={lang[data.lang_id-1]} username={data.user_id} id={data.code_id}/>
+      <IssueCard title={data.title} language={lang[data.lang_id-1]} username={data.user_name} id={data.code_id}/>
       <br/>
       </>
      ))}
