@@ -15,7 +15,6 @@ function ColorfulTextField({ datas }) {
       {datas.map((data, index) => (
         data.code.split(/(\n)/).map((d,i)=>(
           <span style={{ background:bgcolors[data.status+1], color: colors[data.status+1] }}>
-          {d===""?console.log("から"):console.log(d)}
           {d===""||d===`
 `?d:<>{d}<br/></>}
           </span>
@@ -49,21 +48,23 @@ const colums =[
 const SubmitCode = (props) => {
   const { issueId,submission,submissionId } = useParams([]);
   const [data, setData] = useState([]);
-  const issueDataLink='http://localhost:5050/api/v1/code/'+String(issueId);
-  console.log(String(issueDataLink));
+  const [submitedcode,setCode]=useState([]);
+  
+  const [Rows,setRows]=useState([]);
+  const issueDataLink='http://localhost:5050/api/v1/code/'+String(submissionId);
+  //console.log(String(issueDataLink));
   useEffect(() => {
       fetch(issueDataLink)
           .then(response => response.json())
-          .then(data=> setData(data.children))
+          .then(data=>{
+            setData(data.children)
+            setCode(data.code_diff);
+            setRows([{id:data.code_id,name:data.user_name,result:data.results[0].result,date:data.create_at}])
+            console.log(data)
+          }
+          )
           .catch(error => console.error('Error fetching data:', error));
   }, []);
-  const Rows=data===[]?[{ id:"1",name: "user", result: 'AC', date:'2024 2/11'},]:[{ id:"1",name: "user", result: 'AC', date:'2024 2/11'}]
-  const submitedcode=[
-    {code: "#include<iostream>\n int main(){\n", status: 0 },
-    {code: "cout<<hello<<endl;\n", status: -1 },
-    {code: "std::cout<<hello<<std::endl;\n", status: 1 },
-    {code: "}", status: 0 }
-  ]
   return (
     <div style={{paddingTop:"30px",paddingBottom:"20px",background:"#fff", width:"70%",minWidth:"700px",minHeight:"800px",marginRight:"auto",marginLeft:"auto",boxShadow: "0px 5px 20px #5f5f5f",}}>
       <Grid container >

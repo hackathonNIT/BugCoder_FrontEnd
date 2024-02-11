@@ -34,7 +34,8 @@ const SendIssue = (props) => {
       })
       .then(res => {
           console.log(res)
-          navigate("/")
+          const nlink="/issue/"+res.code_id;
+          navigate(nlink)
       })
       .catch((err) => {
         console.log(err) // 失敗
