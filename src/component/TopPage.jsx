@@ -9,11 +9,12 @@ import { useState,useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
 function issuecards(datas){
+  const lang=["cpp","python"];
   return(
     <>
      {datas.reverse().map((data,index)=>(
       <>
-      <IssueCard title={data.title} language={'Cpp'} username={data.user_id} id={data.code_id}/>
+      <IssueCard title={data.title} language={lang[data.lang_id-1]} username={data.user_id} id={data.code_id}/>
       <br/>
       </>
      ))}

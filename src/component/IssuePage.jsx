@@ -8,6 +8,7 @@ import Requests from "./Requests";
 const IssuePage=(props)=>{
   const { issueId } = useParams();
   const [data, setData] = useState(0);
+  const lang=["cpp","python"];
   const issueDataLink='http://localhost:5050/api/v1/code/'+String(issueId);
   console.log(String(issueDataLink));
   useEffect(() => {
@@ -20,7 +21,7 @@ const IssuePage=(props)=>{
   console.log(data)
   return(
     <>
-      {data&&<Issue title={data.title} explane={data.detail} code={data.code_data} id={issueId} input={data.answer&&data.answer[0].indata} output={data.answer&&data.answer[0].outdata}/>}
+      {data&&<Issue title={data.title} explane={data.detail} code={data.code_data} id={issueId} input={data.answer&&data.answer[0].indata} output={data.answer&&data.answer[0].outdata} language={lang[data.lang_id-1]}/>}
     </>
   );
 }

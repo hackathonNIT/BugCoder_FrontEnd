@@ -6,7 +6,7 @@ import {Textarea} from "@mui/joy";
 import{useForm,Controller}from "react-hook-form";
 import IssueAppbar from "./IssueAppbar";
 
-const Issue = ({title,explane,code,input,output,id}) => {
+const Issue = ({title,explane,code,input,output,id,language}) => {
   if(input===null||input==="")input="特になし";
   if(output===null||output==="")output="特になし";
   console.log(input)
@@ -15,7 +15,6 @@ const Issue = ({title,explane,code,input,output,id}) => {
     explane2+=item.match(/\\n/) ? `
 ` : item
   })
-  const language="cpp";
   const{control,handleSubmit}=useForm({
     defaultValue:{
       program:"",
@@ -37,7 +36,7 @@ const Issue = ({title,explane,code,input,output,id}) => {
             <pre style={{whiteSpace:"pre-wrap", fontFamily:"メイリオ"}}>{explane2}</pre>
             <h2>プログラム</h2>
             <p>使用言語:{language}</p>
-            <CodeViewer codeString={code} language={language}/>
+            <CodeViewer codeString={code} language="cpp"/>
             <hr style={{marginTop:"10px",marginBottom:"20px",border:"0",borderTop:"1px solid #eee"}}/>
             <h2>入力</h2>
             <GrayBox contentString={input}/>
