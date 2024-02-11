@@ -33,7 +33,7 @@ const Header = (props) => {
         <nav>
           <ul class="global-nav">
             <NavLink to={"/"}>
-            <li><a class="a1" >ページ概要</a></li>
+            <li><a class="a1" >問題一覧</a></li>
             </NavLink>
             <NavLink to={"/sendissue"}>
             <li><a class="a1">投稿する</a></li>

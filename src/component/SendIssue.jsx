@@ -1,18 +1,45 @@
 import React from "react";
 import{useForm,Controller}from "react-hook-form";
 import { Grid,TextField,Button,MenuItem,FormControlLabel } from "@mui/material";
+import axios from "axios";
+import { useAuth } from "./AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const SendIssue = (props) => {
+  const navigate=useNavigate();
+  const {userid}=useAuth();
   const{control,handleSubmit}=useForm({
     defaultValue:{
       titleBox:"",
-      pullDown:"",
+      languageBox:"",
       explaneBox:"",
       programBox:"",
+      inputBox:"",
+      outputBox:"",
     },
   });
   const onSubmit=(data,e)=>{
-    console.log(data.titleBox);
+    if(data.titleBox===undefined)console.log(undefined)
+    if(data.programBox!==undefined&&data.titleBox!==undefined&&data.explaneBox!==undefined){
+      const lang_id=data.languageBox==="C++"?"1":"2";
+      const input_data=data.inputBox===undefined?"":data.inputBox;
+      const output_data=data.outputBox===undefined?"":data.outputBox;
+      const postdata= 'user_id='+userid+'&code_data='+data.programBox+'&title='+data.titleBox+'&detail='+data.explaneBox+'&lang_id='+lang_id+'&indata='+input_data+'&outdata='+output_data;
+      console.log(postdata)
+      axios.post( 'http://localhost:5050/api/v1/code/submitissue',postdata,{
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      })
+      .then(res => {
+          console.log(res)
+          navigate("/")
+      })
+      .catch((err) => {
+        console.log(err) // 失敗
+      })
+    }
   };
   return (
     <div style={{paddingTop:"20px",paddingBottom:"20px",background:"#fff", width:"70%",minWidth:"700px",minHeight:"800px",marginRight:"auto",marginLeft:"auto",boxShadow: "0px 5px 20px #5f5f5f",}}>
@@ -39,7 +66,7 @@ const SendIssue = (props) => {
               <h3 style={{marginBottom:"0px",}}>使用言語</h3>
               <Controller
                 control={control}
-                name="pullDown"
+                name="languageBox"
                 render={({field})=>(
                   <TextField
                     {...field}

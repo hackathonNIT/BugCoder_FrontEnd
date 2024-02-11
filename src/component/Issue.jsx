@@ -6,9 +6,11 @@ import {Textarea} from "@mui/joy";
 import{useForm,Controller}from "react-hook-form";
 import IssueAppbar from "./IssueAppbar";
 import { useAuth } from "./AuthProvider";
-import { NavLink } from "react-router-dom";
+import { NavLink,useNavigate } from "react-router-dom";
 import axios from "axios";
 const Issue = ({title,explane,code,input,output,issue_id,language}) => {
+  const navigate=useNavigate();
+  const sublink='/issue/'+issue_id+'/submission'
   const{authenticated,login,logout,id}=useAuth();
   if(input===null||input==="")input="特になし";
   if(output===null||output==="")output="特になし";
@@ -25,20 +27,23 @@ const Issue = ({title,explane,code,input,output,issue_id,language}) => {
     },
   });
   const onSubmit=(data,e)=>{
-    console.log(data.program);
-    const postdata= 'code='+data.program+'&code_id='+data.code_id
-    axios.post( 'http://localhost:5050/api/v1/code/submit',postdata,{
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
-    })
+    if(data.program!==undefined&&data.program!==""){
+      console.log('code='+data.program+'&code_id='+issue_id);
+      const postdata= 'code='+data.program+'&code_id='+issue_id
+      axios.post( 'http://localhost:5050/api/v1/code/submit',postdata,{
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      })
       .then(res => {
           console.log(res)
+          //navigate(sublink)
       })
       .catch((err) => {
         console.log(err) // 失敗
       })
+    }
   };
 
   return (

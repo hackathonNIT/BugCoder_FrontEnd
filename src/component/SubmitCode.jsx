@@ -3,9 +3,9 @@ import{useForm,Controller}from "react-hook-form";
 import { Grid,TextField,Button,MenuItem,FormControlLabel } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useEffect,useState } from "react";
-
+import IssueAppbar from "./IssueAppbar";
+import { DataGrid } from "@mui/x-data-grid";
 function ColorfulTextField({ datas }) {
-
   // 各行の文字色
   const colors = ['#880000', '#111111', '#476B43']; // 例として3つの色を使用
   const bgcolors=['#FFD7D5', '#FFFFFF', '#CCFFD8'];
@@ -25,6 +25,26 @@ function ColorfulTextField({ datas }) {
     </div>
   );
 }
+const colums =[
+  {
+    field: 'name',
+    headerName: 'ユーザー名',
+    type: 'string',
+    flex: 2,
+  },
+  {
+    field: 'result',
+    headerName: '結果',
+    type: 'string',
+    flex: 1,
+  },
+  {
+    field: 'date',
+    headerName: '提出日時',
+    type: 'string',
+    flex: 1.5,
+  },
+];
 
 const SubmitCode = (props) => {
   const { issueId,submission,submissionId } = useParams([]);
@@ -37,7 +57,7 @@ const SubmitCode = (props) => {
           .then(data=> setData(data.children))
           .catch(error => console.error('Error fetching data:', error));
   }, []);
-  data[0]&&console.log(data[0].code_data)
+  const Rows=data===[]?[{ id:"1",name: "user", result: 'AC', date:'2024 2/11'},]:[{ id:"1",name: "user", result: 'AC', date:'2024 2/11'}]
   const submitedcode=[
     {code: "#include<iostream>\n int main(){\n", status: 0 },
     {code: "cout<<hello<<endl;\n", status: -1 },
@@ -45,15 +65,17 @@ const SubmitCode = (props) => {
     {code: "}", status: 0 }
   ]
   return (
-    <div style={{paddingTop:"20px",paddingBottom:"20px",background:"#fff", width:"70%",minWidth:"700px",minHeight:"800px",marginRight:"auto",marginLeft:"auto",boxShadow: "0px 5px 20px #5f5f5f",}}>
+    <div style={{paddingTop:"30px",paddingBottom:"20px",background:"#fff", width:"70%",minWidth:"700px",minHeight:"800px",marginRight:"auto",marginLeft:"auto",boxShadow: "0px 5px 20px #5f5f5f",}}>
       <Grid container >
         <Grid sm={1}/>
           <Grid  xs={10} >
-          <h1 style={{marginBottom:"0px",}}>提出コード</h1>
+          <IssueAppbar page="1" id={issueId}/>
+          <h1 style={{marginBottom:"0px",paddingTop:"20px",fontSize:"28px",fontWeight:"600"}}>提出コード</h1>
           <hr style={{marginTop:"0px",marginBottom:"10px",border:"0",borderTop:"1px solid #eee"}}/>
-          <div style={{outlineColor:"#ddd",outlineStyle:"solid",padding:"20px"}}>
+          <div style={{outlineColor:"#ddd",outlineStyle:"solid",padding:"20px",marginBottom:"20px"}}>
             <ColorfulTextField datas={submitedcode}/>
           </div>
+          <DataGrid rows={Rows} columns={colums}/>
           </Grid>
       </Grid>
     </div>
