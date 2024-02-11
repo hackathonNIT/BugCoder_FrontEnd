@@ -1,6 +1,8 @@
 import React from "react";
 import{useForm,Controller}from "react-hook-form";
 import { Grid,TextField,Button,MenuItem,FormControlLabel } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { useEffect,useState } from "react";
 
 function ColorfulTextField({ datas }) {
 
@@ -11,11 +13,11 @@ function ColorfulTextField({ datas }) {
   return (
     <div>
       {datas.map((data, index) => (
-        data.code.split(/(\n )/).map((d,i)=>(
+        data.code.split(/(\n)/).map((d,i)=>(
           <span style={{ background:bgcolors[data.status+1], color: colors[data.status+1] }}>
-          {d}
-          {console.log(d)}
-          <br/>
+          {d===""?console.log("から"):console.log(d)}
+          {d===""||d===`
+`?d:<>{d}<br/></>}
           </span>
         ))
         // 各行のspan要素に適用するスタイルを設定する
@@ -25,6 +27,17 @@ function ColorfulTextField({ datas }) {
 }
 
 const SubmitCode = (props) => {
+  const { issueId,submission,submissionId } = useParams([]);
+  const [data, setData] = useState([]);
+  const issueDataLink='http://localhost:5050/api/v1/code/'+String(issueId);
+  console.log(String(issueDataLink));
+  useEffect(() => {
+      fetch(issueDataLink)
+          .then(response => response.json())
+          .then(data=> setData(data.children))
+          .catch(error => console.error('Error fetching data:', error));
+  }, []);
+  data[0]&&console.log(data[0].code_data)
   const submitedcode=[
     {code: "#include<iostream>\n int main(){\n", status: 0 },
     {code: "cout<<hello<<endl;\n", status: -1 },
@@ -38,7 +51,6 @@ const SubmitCode = (props) => {
           <Grid  xs={10} >
           <h1 style={{marginBottom:"0px",}}>提出コード</h1>
           <hr style={{marginTop:"0px",marginBottom:"10px",border:"0",borderTop:"1px solid #eee"}}/>
-          
           <div style={{outlineColor:"#ddd",outlineStyle:"solid",padding:"20px"}}>
             <ColorfulTextField datas={submitedcode}/>
           </div>

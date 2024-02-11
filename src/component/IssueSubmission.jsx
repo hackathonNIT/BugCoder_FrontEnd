@@ -47,7 +47,7 @@ function Rows(datas){
   console.log(datas)
   if(datas===null)return rows
   for(let i=0;i<datas.length;i++){
-    rows.push({id:datas[i].code_id,name:"username",result:datas[i].results[0].result,date:datas[i].create_at})
+    rows.push({id:i,name:"username",result:datas[i].results[0].result,date:datas[i].create_at})
   }
   return rows
 }

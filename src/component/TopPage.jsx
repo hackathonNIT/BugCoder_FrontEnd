@@ -57,15 +57,6 @@ const TopPage = (props) => {
           <Grid sm={1}/>
           <Grid xs={10} spacing={2}>
             {issuecards(data)}
-            {/* {data &&<IssueCard title={data[latestIssue].title} language={'Cpp'} username={data[latestIssue].user_id} id={data[latestIssue].code_id}/>
-            }
-            <br/>
-            {data &&<IssueCard title={data[latestIssue-1].title} language={'Cpp'} username={data[latestIssue-1].user_id} id={data[latestIssue-1].code_id}/>
-            }
-            <br/>
-            {data &&<IssueCard title={data[latestIssue-2].title} language={'Cpp'} username={data[latestIssue-2].user_id} id={data[latestIssue-2].code_id}/>
-            }
-            <br/> */}
           </Grid>
         </Grid>
       </div>
