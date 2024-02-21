@@ -21,7 +21,7 @@ const IssuePage=(props)=>{
   console.log(data)
   return(
     <>
-      {data&&<Issue title={data.title} explane={data.detail} code={data.code_data} issue_id={issueId} input={data.answer&&data.answer[0].indata} output={data.answer&&data.answer[0].outdata} language={lang[data.lang_id-1]}/>}
+      {data&&<Issue title={data.title} explane={data.detail} code={data.code_data} issue_id={issueId} input={data.answer&&data.answer[0].indata} output={data.answer&&data.answer[0].outdata} language={lang[0]}/>}
     </>
   );
 }

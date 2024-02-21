@@ -21,7 +21,7 @@ const SendIssue = (props) => {
   const onSubmit=(data,e)=>{
     if(data.titleBox===undefined)console.log(undefined)
     if(data.programBox!==undefined&&data.titleBox!==undefined&&data.explaneBox!==undefined){
-      const lang_id=data.languageBox==="cpp"?"1":"2";
+      const lang_id=data.languageBox==="python"?"2":"1";
       const input_data=data.inputBox===undefined?"":data.inputBox;
       const output_data=data.outputBox===undefined?"":data.outputBox;
       const postdata= 'user_id='+userid+'&code_data='+data.programBox+'&title='+data.titleBox+'&detail='+data.explaneBox+'&lang_id='+lang_id+'&indata='+input_data+'&outdata='+output_data;

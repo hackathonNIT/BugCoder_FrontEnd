@@ -11,7 +11,7 @@ import axios from "axios";
 const Issue = ({title,explane,code,input,output,issue_id,language}) => {
   const navigate=useNavigate();
   const sublink='/issue/'+issue_id+'/submission'
-  const{authenticated,login,logout,id}=useAuth();
+  const{authenticated,login,logout,userid}=useAuth();
   if(input===null||input==="")input="特になし";
   if(output===null||output==="")output="特になし";
   console.log(input)
@@ -29,7 +29,7 @@ const Issue = ({title,explane,code,input,output,issue_id,language}) => {
   const onSubmit=(data,e)=>{
     if(data.program!==undefined&&data.program!==""){
       console.log('code='+data.program+'&code_id='+issue_id);
-      const postdata= 'code='+data.program+'&code_id='+issue_id
+      const postdata= 'code='+data.program+'&code_id='+issue_id+'user_id='+userid
       axios.post( 'http://localhost:5050/api/v1/code/submit',postdata,{
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -38,7 +38,7 @@ const Issue = ({title,explane,code,input,output,issue_id,language}) => {
       })
       .then(res => {
           console.log(res)
-          //navigate(sublink)
+          navigate(sublink)
       })
       .catch((err) => {
         console.log(err) // 失敗
